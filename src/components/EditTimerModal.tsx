@@ -3,6 +3,7 @@ import { X, Clock } from 'lucide-react';
 import { useTimerStore } from '../store/useTimerStore';
 import { validateTimerForm } from '../utils/validation';
 import { Timer } from '../types/timer';
+import { Button } from './Button';
 
 interface EditTimerModalProps {
   isOpen: boolean;
@@ -86,12 +87,11 @@ export const EditTimerModal: React.FC<EditTimerModalProps> = ({
             <Clock className="w-5 h-5 text-blue-600" />
             <h2 className="text-xl font-semibold">Edit Timer</h2>
           </div>
-          <button 
+          <Button 
             onClick={handleClose}
             className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+            icon={<X className="w-5 h-5" />}
+          />
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -185,14 +185,13 @@ export const EditTimerModal: React.FC<EditTimerModalProps> = ({
           </div>
           
           <div className="flex justify-end gap-3 pt-4 border-t">
-            <button
+            <Button
               type="button"
               onClick={handleClose}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
+              children="Cancel"
+            />
+            <Button
               type="submit"
               className={`px-4 py-2 text-sm font-medium text-white rounded-md transition-colors ${
                 isTitleValid && isTimeValid
@@ -200,9 +199,8 @@ export const EditTimerModal: React.FC<EditTimerModalProps> = ({
                   : 'bg-blue-400 cursor-not-allowed'
               }`}
               disabled={!isTitleValid || !isTimeValid}
-            >
-              Save Changes
-            </button>
+              children="Save"
+            />
           </div>
         </form>
       </div>

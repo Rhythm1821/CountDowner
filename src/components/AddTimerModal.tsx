@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Clock } from 'lucide-react';
 import { useTimerStore } from '../store/useTimerStore';
 import { validateTimerForm } from '../utils/validation';
+import { Button } from './Button';
 
 interface AddTimerModalProps {
   isOpen: boolean;
@@ -77,12 +78,12 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
             <Clock className="w-5 h-5 text-blue-600" />
             <h2 className="text-xl font-semibold">Add New Timer</h2>
           </div>
-          <button 
+          <Button
             onClick={handleClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+            variant="ghost"
+            className="p-1 rounded-full transition-colors"
+            icon={<X className="w-5 h-5" />}
+          />
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -172,14 +173,13 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
           </div>
           
           <div className="flex justify-end gap-3 pt-4 border-t">
-            <button
+            <Button
               type="button"
               onClick={handleClose}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
+              children="Cancel"
+            />
+            <Button
               type="submit"
               className={`px-4 py-2 text-sm font-medium text-white rounded-md transition-colors ${
                 isTitleValid && isTimeValid
@@ -187,9 +187,8 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
                   : 'bg-blue-400 cursor-not-allowed'
               }`}
               disabled={!isTitleValid || !isTimeValid}
-            >
-              Add Timer
-            </button>
+              children="Add Timer"
+            />
           </div>
         </form>
       </div>

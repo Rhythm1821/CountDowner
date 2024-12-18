@@ -8,6 +8,7 @@ import { EditTimerModal } from './EditTimerModal';
 import { TimerAudio } from '../utils/audio';
 import { TimerControls } from './TimerControls';
 import { TimerProgress } from './TimerProgress';
+import { Button } from './Button';
 
 interface TimerItemProps {
   timer: Timer;
@@ -23,7 +24,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
   useEffect(() => {
     if (timer.isRunning) {
       intervalRef.current = window.setInterval(() => {
-        updateTimer(timer.id);
+        updateTimer();
   
         if (timer.remainingTime <= 1 && !hasEndedRef.current) {
           hasEndedRef.current = true;
@@ -86,27 +87,24 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
               <p className="text-gray-600 mt-1">{timer.description}</p>
             </div>
             <div className="flex gap-2">
-              <button
+              <Button
                 onClick={() => setIsEditModalOpen(true)}
                 className="p-2 rounded-full hover:bg-blue-50 text-blue-500 transition-colors"
                 title="Edit Timer"
-              >
-                <Pencil className="w-5 h-5" />
-              </button>
-              <button
+                icon={<Pencil className="w-5 h-5" />}
+              />
+              <Button
                 onClick={handleRestart}
                 className="p-2 rounded-full hover:bg-blue-50 text-blue-500 transition-colors"
                 title="Restart Timer"
-              >
-                <RotateCcw className="w-5 h-5" />
-              </button>
-              <button
+                icon={<RotateCcw className="w-5 h-5" />}
+              />              
+              <Button
                 onClick={handleDelete}
                 className="p-2 rounded-full hover:bg-red-50 text-red-500 transition-colors"
                 title="Delete Timer"
-              >
-                <Trash2 className="w-5 h-5" />
-              </button>
+                icon={<Trash2 className="w-5 h-5" />}
+              />
             </div>
           </div>
           <div className="flex flex-col items-center mt-6">
