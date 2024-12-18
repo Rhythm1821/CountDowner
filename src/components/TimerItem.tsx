@@ -30,11 +30,11 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
           timerAudio.play().catch(console.error);
   
           toast.success(`Timer "${timer.title}" has ended!`, {
-            duration: 5000,
+            duration: Infinity, 
             action: {
               label: 'Dismiss',
               onClick: () => {
-                timerAudio.stop(); // Stop sound on dismiss
+                timerAudio.stop(); 
               },
             },
           });
@@ -44,6 +44,7 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
   
     return () => clearInterval(intervalRef.current!);
   }, [timer.isRunning, timer.id, timer.remainingTime, timer.title, timerAudio, updateTimer]);
+  
   
 
   const handleRestart = () => {
