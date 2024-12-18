@@ -9,7 +9,6 @@ interface ModalProps {
   children: React.ReactNode;
   onSubmit: (e: React.FormEvent) => void;
   submitButtonText: string;
-  // isSubmitDisabled: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -19,7 +18,6 @@ export const Modal: React.FC<ModalProps> = ({
   children,
   onSubmit,
   submitButtonText,
-  // isSubmitDisabled,
 }) => {
   if (!isOpen) return null;
 
