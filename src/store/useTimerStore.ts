@@ -27,11 +27,12 @@ const timerSlice = createSlice({
       }
     },
     updateTimer: (state, action) => {
-      const timer = state.timers.find(timer => timer.id === action.payload);
-      if (timer && timer.isRunning) {
-        timer.remainingTime -= 1;
-        timer.isRunning = timer.remainingTime > 0;
-      }
+      state.timers.forEach((timer) => {
+        if (timer.isRunning) {
+          timer.remainingTime -= 1;
+          timer.isRunning = timer.remainingTime > 0;
+        }
+      });
     },
     restartTimer: (state, action) => {
       const timer = state.timers.find(timer => timer.id === action.payload);
