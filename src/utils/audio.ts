@@ -3,6 +3,7 @@ export class TimerAudio {
   private audioContext: AudioContext | null = null;
   private oscillator: OscillatorNode | null = null;
   private gainNode: GainNode | null = null;
+  private isPlaying = false;
 
   private constructor() {}
 
@@ -24,54 +25,41 @@ export class TimerAudio {
   }
 
   async play(): Promise<void> {
-    try {
-      await this.initializeAudioContext();
-      
-      if (!this.audioContext) {
-        throw new Error('AudioContext not initialized');
-      }
+    if (this.isPlaying) return; // Prevent multiple instances from playing
 
-      // Create and configure oscillator
-      this.oscillator = this.audioContext.createOscillator();
-      this.gainNode = this.audioContext.createGain();
-      
-      this.oscillator.type = 'sine';
-      this.oscillator.frequency.setValueAtTime(880, this.audioContext.currentTime); // A5 note
-      
-      // Configure gain (volume) envelope
-      this.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-      this.gainNode.gain.linearRampToValueAtTime(0.5, this.audioContext.currentTime + 0.01);
-      this.gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + 0.5);
-      
-      // Connect nodes
-      this.oscillator.connect(this.gainNode);
-      this.gainNode.connect(this.audioContext.destination);
-      
-      // Start and stop the oscillator
-      this.oscillator.start(this.audioContext.currentTime);
-      this.oscillator.stop(this.audioContext.currentTime + 0.5);
-      
-      // Cleanup after sound ends
-      setTimeout(() => {
-        this.cleanup();
-      }, 500);
+    this.isPlaying = true;
+    await this.initializeAudioContext();
 
-    } catch (error) {
-      console.error('Failed to play audio:', error);
+    if (!this.audioContext) {
+      throw new Error('AudioContext not initialized');
     }
+
+    // Create oscillator and gain node
+    this.oscillator = this.audioContext.createOscillator();
+    this.gainNode = this.audioContext.createGain();
+
+    this.oscillator.type = 'sine';
+    this.oscillator.frequency.setValueAtTime(880, this.audioContext.currentTime); // A5 note
+
+    // Set gain to loop continuously
+    this.gainNode.gain.setValueAtTime(0.5, this.audioContext.currentTime);
+
+    // Connect nodes
+    this.oscillator.connect(this.gainNode);
+    this.gainNode.connect(this.audioContext.destination);
+
+    this.oscillator.start(this.audioContext.currentTime);
   }
 
   stop(): void {
-    this.cleanup();
-  }
+    this.isPlaying = false;
 
-  private cleanup(): void {
     if (this.oscillator) {
       try {
         this.oscillator.stop();
         this.oscillator.disconnect();
       } catch (error) {
-        console.log(error)
+        console.error('Failed to stop audio:', error);
       }
       this.oscillator = null;
     }

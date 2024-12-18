@@ -24,24 +24,27 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
     if (timer.isRunning) {
       intervalRef.current = window.setInterval(() => {
         updateTimer(timer.id);
-        
+  
         if (timer.remainingTime <= 1 && !hasEndedRef.current) {
           hasEndedRef.current = true;
           timerAudio.play().catch(console.error);
-          
+  
           toast.success(`Timer "${timer.title}" has ended!`, {
             duration: 5000,
             action: {
               label: 'Dismiss',
-              onClick: timerAudio.stop,
+              onClick: () => {
+                timerAudio.stop(); // Stop sound on dismiss
+              },
             },
           });
         }
       }, 1000);
     }
-
+  
     return () => clearInterval(intervalRef.current!);
   }, [timer.isRunning, timer.id, timer.remainingTime, timer.title, timerAudio, updateTimer]);
+  
 
   const handleRestart = () => {
     hasEndedRef.current = false;
